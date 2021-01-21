@@ -1,6 +1,7 @@
 const UserModel = require('../../model/user');
 const validateData = require('../../validator/auth/loginUser');
 const {compareHash} = require('../../utils/bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res) => {
   const {email, password} = req.body;
@@ -9,8 +10,10 @@ module.exports = async (req, res) => {
     return res.status(401).send('wrong password/email');
   try {
     const user = await UserModel.findOne({email}).exec();
-    if (user && compareHash(password, user.password) ) {
-      res.send('User logged in!');
+    if (user && compareHash(password, user.password)) {
+      const token = await jwt.sign({id: user._id}, process.env.SECRET);
+      res.cookie('token', token, {httpOnly: true, sameSite: true, maxAge: 3600000})
+      res.send({token});
     } else {
       res.status(401).send('wrong password/email')
     }
