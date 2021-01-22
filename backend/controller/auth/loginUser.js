@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     if (user && compareHash(password, user.password)) {
       const token = await jwt.sign({id: user._id}, process.env.SECRET);
       res.cookie('token', token, {httpOnly: true, sameSite: true, maxAge: 3600000})
-      res.send({token});
+      res.send('user logged in!');
     } else {
       res.status(401).send('wrong password/email')
     }

@@ -1,8 +1,11 @@
+import {Switch, Route} from 'react-router-dom';
+import LoginView from './views/LoginView';
+
 function App() {
   return (
-    <div>
-      <p className='text-gray-600 text-2xl font-bold text-center'>hello there</p>
-    </div>
+    <Switch>
+      <Route exact path='/login' component={LoginView} />
+    </Switch>
   );
 }
 

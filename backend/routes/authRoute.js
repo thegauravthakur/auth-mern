@@ -7,8 +7,5 @@ const router = express.Router();
 
 router.post('/createUser', createUser);
 router.post('/loginUser', loginUser);
-router.get('/protected', protectedRoute,  (req, res) => {
-  res.send('hello')
-})
-
+router.get('/test', (req,res) => res.send('done'))
 module.exports = router;
