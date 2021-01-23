@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../../model/user");
 
-// It will check if token is present if token in invalid || not present
+// It will check if token in invalid || not present
 // then it will send a null in response otherwise it will send the user
 // information except the password
 
