@@ -1,7 +1,6 @@
 const express = require("express");
-const verifyUser = require("../controller/user/verify");
+const jwtToUser = require("../controller/user/jwtToUser");
 const router = express.Router();
 
-router.get("/verify", verifyUser);
-
+router.get("/jwtToUser", jwtToUser);
 module.exports = router;

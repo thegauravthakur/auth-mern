@@ -6,6 +6,7 @@ import HomeView from "./views/HomeView";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { UserState } from "./recoil/atom";
+import CreateAccount from './views/CreateAccount';
 
 function App() {
   const [user, setUser] = useRecoilState(UserState);
@@ -14,7 +15,7 @@ function App() {
     const getUser = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get("/verify");
+        const { data } = await axios.get("/jwtToUser");
         setUser(data);
         setLoading(false);
       } catch (e) {
@@ -28,6 +29,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/login" component={LoginView} />
+      <Route exact path='/signup' component={CreateAccount} />
       <ProtectedRoute component={HomeView} />
     </Switch>
   );
