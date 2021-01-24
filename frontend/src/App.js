@@ -6,7 +6,7 @@ import HomeView from "./views/HomeView";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { UserState } from "./recoil/atom";
-import CreateAccount from './views/CreateAccount';
+import CreateAccountView from './views/CreateAccountView';
 
 function App() {
   const [user, setUser] = useRecoilState(UserState);
@@ -29,7 +29,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/login" component={LoginView} />
-      <Route exact path='/signup' component={CreateAccount} />
+      <Route exact path='/signup' component={CreateAccountView} />
       <ProtectedRoute component={HomeView} />
     </Switch>
   );

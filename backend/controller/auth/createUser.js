@@ -1,6 +1,7 @@
 const validateData = require('../../validator/auth/createUser');
 const UserModel = require('../../model/user');
 const {textToHash} = require('../../utils/bcrypt');
+const signTokenAndSendCookie = require('../../helpers/signTokenAndSendCookie');
 
 module.exports = async (req, res) => {
   const error = validateData(req.body);
@@ -11,7 +12,7 @@ module.exports = async (req, res) => {
   try {
     const newUser = new UserModel({...req.body, password: textToHash(req.body.password)});
     await newUser.save();
-    res.send(newUser)
+    await signTokenAndSendCookie(newUser, res);
   } catch (e) {
     switch (e.code) {
       case ( 11000):

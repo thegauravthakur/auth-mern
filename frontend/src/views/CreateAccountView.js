@@ -1,19 +1,51 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
 import { AiFillGoogleCircle, AiOutlineTwitter } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
+import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import { useRecoilState } from "recoil";
+import { UserState } from "../recoil/atom";
+import { Redirect } from "react-router-dom";
+import { RiLoader2Line } from "react-icons/ri";
 
-const CreateAccount = () => {
+const CreateAccountView = () => {
   const { register, handleSubmit, errors, watch } = useForm();
+  const [user, setUser] = useRecoilState(UserState);
+  const [loading, setLoading] = useState(false);
   const password = useRef({});
   password.current = watch("password");
-  const onSubmitHandler = (data) => {
-    console.log(data);
+
+  const onSubmitHandler = async (data) => {
+    const { name, email, password } = data;
+    const options = { headers: { "Content-Type": "application/json" } };
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        "/createUser",
+        { name, email, password },
+        options
+      );
+      setUser(data);
+      setLoading(false);
+    } catch (e) {
+      const { data } = e.response;
+      console.error(data);
+      toast(data ? data : "Some error occurred while creating user", {
+        type: "error",
+      });
+      setLoading(false);
+    }
   };
 
   const validator = (data) => {
     return data === password.current;
   };
+
+  if (user) {
+    return <Redirect to={"/"} />;
+  }
 
   return (
     <div className="flex min-h-screen justify-center items-center flex-col bg-blue-50">
@@ -100,8 +132,27 @@ const CreateAccount = () => {
         </div>
         <button
           type="submit"
-          className="text-sm font-semibold w-full mt-3 py-2 mb-5 bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-white"
+          className="relative text-sm font-semibold w-full mt-3 py-2 mb-5 bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-white transition duration-500 ease-in-out "
         >
+          <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+            {!loading ? (
+              <svg
+                className="h-5 w-5 text-gray-200 group-hover:text-indigo-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <RiLoader2Line className="h-5 w-5 animate-spin" />
+            )}
+          </span>
           Create Account
         </button>
         <div className="grid grid-cols-3 items-center">
@@ -112,19 +163,20 @@ const CreateAccount = () => {
           <hr className="mx-2" />
         </div>
         <div className="grid grid-cols-3 gap-5 mt-5 mb-3">
-          <button className="w-full py-1 border-2 rounded-md">
+          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
             <AiFillGoogleCircle size={20} className="mx-auto text-gray-600" />
           </button>
-          <button className="w-full py-1 border-2 rounded-md">
+          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
             <FaFacebook size={18} className="mx-auto text-gray-600" />
           </button>
-          <button className="w-full py-1 border-2 rounded-md">
+          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
             <AiOutlineTwitter size={20} className="mx-auto text-gray-600" />
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
 
-export default CreateAccount;
+export default CreateAccountView;
