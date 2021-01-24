@@ -15,3 +15,6 @@ app.use(userRoute);
 app.use(authRoute);
 
 app.listen(PORT, () => console.log('Server started listening on port ' + PORT))
+
+
+
