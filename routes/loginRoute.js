@@ -9,9 +9,6 @@ const axios = require('axios');
 router.post("/email-password", loginUserByEmailPassword);
 router.post("/google", loginByGoogle);
 router.post("/facebook", loginByFacebook);
-router.get('/github', loginByGithub);
-router.get('/github-initiate', async (req, res) => {
-  res.redirect('https://github.com/login/oauth/authorize?client_id=036a1804f3cb8a9bd704');
-})
+// router.get('/github', loginByGithub);
 
 module.exports = router;

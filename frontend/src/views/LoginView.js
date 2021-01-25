@@ -3,11 +3,11 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { RiLoader2Line } from "react-icons/ri";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
 import { UserState } from "../recoil/atom";
-import { AiFillGoogleCircle, AiOutlineTwitter } from "react-icons/ai";
+import { AiFillGoogleCircle } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
 import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -17,6 +17,12 @@ const LoginView = () => {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
   const options = { headers: { "Content-Type": "application/json" } };
+  useEffect(() => {
+    window.addEventListener("message", function (e) {
+      console.log("some message from the child");
+      console.log(e);
+    });
+  });
   const googleLoginResponseHandler = async (response) => {
     try {
       setLoading(true);
@@ -75,7 +81,9 @@ const LoginView = () => {
   if (user) {
     return <Redirect to={"/"} />;
   }
-
+  const test = () => {
+    console.log("call from child to parent");
+  };
   return (
     <div className="flex min-h-screen justify-center items-center flex-col bg-blue-50">
       <h1 className="text-3xl font-bold text-gray-600">
@@ -139,7 +147,7 @@ const LoginView = () => {
           </p>
           <hr className="mx-2" />
         </div>
-        <div className="grid grid-cols-3 gap-5 mt-5 mb-3">
+        <div className="grid grid-cols-2 gap-5 mt-5 mb-3">
           <GoogleLogin
             clientId="206612287240-pdsfsm9qb0u6kgfgpsb86ejg220t74v0.apps.googleusercontent.com"
             render={(renderProps) => (
@@ -173,14 +181,19 @@ const LoginView = () => {
               </button>
             )}
           />
-
-          <button
-            type="button"
-            className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"
-            onClick={async () => {}}
-          >
-            <AiOutlineTwitter size={20} className="mx-auto text-gray-600" />
-          </button>
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"*/}
+          {/*  onClick={async () => {*/}
+          {/*    const myWindow = window.open(*/}
+          {/*      "https://github.com/login/oauth/authorize?client_id=036a1804f3cb8a9bd704",*/}
+          {/*      "myWindow",*/}
+          {/*      "width=200, height=100"*/}
+          {/*    );*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  <AiOutlineTwitter size={20} className="mx-auto text-gray-600" />*/}
+          {/*</button>*/}
         </div>
       </form>
       <ToastContainer />

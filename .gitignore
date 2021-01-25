@@ -1,10 +1,10 @@
 /backend/node_modules/
 /frontend/node_modules/
-/backend/.env
+/.env
 /frontend/.env
 /frontend/.eslintcache
 /backend/
-/backend/server.cert
-/backend/server.key
+/server.cert
+/server.key
 /frontend/server.key
 /frontend/server.cert
