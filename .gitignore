@@ -3,7 +3,6 @@
 /backend/.env
 /frontend/.env
 /frontend/.eslintcache
-/backend/
 /backend/server.cert
 /backend/server.key
 /frontend/server.key
