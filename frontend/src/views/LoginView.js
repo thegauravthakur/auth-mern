@@ -17,16 +17,11 @@ const LoginView = () => {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
   const options = { headers: { "Content-Type": "application/json" } };
-  useEffect(() => {
-    window.addEventListener("message", function (e) {
-      console.log("some message from the child");
-      console.log(e);
-    });
-  });
+
   const googleLoginResponseHandler = async (response) => {
     try {
       setLoading(true);
-      const { data } = await axios.post("/loginUser/google", response, options);
+      const { data } = await axios.post("https://hidden-temple-89315.herokuapp.com/loginUser/google", response, options);
       setUser(data);
       setLoading(false);
     } catch (e) {
@@ -40,7 +35,7 @@ const LoginView = () => {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        "/loginUser/facebook",
+        "https://hidden-temple-89315.herokuapp.com/loginUser/facebook",
         response,
         options
       );
@@ -59,7 +54,7 @@ const LoginView = () => {
     if (!error) {
       try {
         const { data } = await axios.post(
-          "/loginUser/email-password",
+          "https://hidden-temple-89315.herokuapp.com/loginUser/email-password",
           { email, password },
           options
         );
@@ -92,7 +87,7 @@ const LoginView = () => {
       <p className="mb-7 text-gray-500 mt-2">Welcome Back</p>
       <form
         onSubmit={handleSubmit(onSubmitHandler)}
-        className="bg-white max-w-md w-full px-14 py-5 rounded-xl shadow-xl"
+        className="bg-white max-w-md px-5 md:px-14 py-5 rounded-xl shadow-xl mx-5 "
       >
         <p className="text-sm font-semibold text-gray-600 mt-1">
           Email address

@@ -23,16 +23,15 @@ const CreateAccountView = () => {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        "/createUser",
+        "https://hidden-temple-89315.herokuapp.com/createUser",
         { name, email, password },
         options
       );
       setUser(data);
       setLoading(false);
     } catch (e) {
-      const { data } = e.response;
-      console.error(data);
-      toast(data ? data : "Some error occurred while creating user", {
+      const { data } = e.response ? e.response : { data: "" };
+      toast(data !== "" ? data : "Some error occurred while creating user", {
         type: "error",
       });
       setLoading(false);
@@ -53,7 +52,7 @@ const CreateAccountView = () => {
       <p className="mb-7 text-gray-500 mt-2">It will only take few seconds</p>
       <form
         onSubmit={handleSubmit(onSubmitHandler)}
-        className="bg-white max-w-md w-full px-14 py-5 rounded-xl shadow-xl"
+        className="bg-white max-w-md px-5 md:px-14 py-5 rounded-xl shadow-xl mx-5 "
       >
         <p
           className={`text-sm font-semibold ${

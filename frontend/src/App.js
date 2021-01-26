@@ -15,7 +15,7 @@ function App() {
     const getUser = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get("/jwtToUser");
+        const { data } = await axios.get("https://hidden-temple-89315.herokuapp.com/jwtToUser");
         setUser(data);
         setLoading(false);
       } catch (e) {
