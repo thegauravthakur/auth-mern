@@ -16,18 +16,27 @@ const LoginView = () => {
   const [user, setUser] = useRecoilState(UserState);
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
-  const options = { headers: { "Content-Type": "application/json" } };
+  const options = {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  };
 
   const googleLoginResponseHandler = async (response) => {
     try {
       setLoading(true);
-      const { data } = await axios.post("https://hidden-temple-89315.herokuapp.com/loginUser/google", response, options);
+      const { data } = await axios.post(
+        "https://hidden-temple-89315.herokuapp.com/loginUser/google",
+        response,
+        options
+      );
       setUser(data);
       setLoading(false);
     } catch (e) {
-      const { data } = e.response;
+      const { data } = e.response ? e.response : { data: "" };
       setLoading(false);
-      toast(data ? data : "error occurred while logging in", { type: "error" });
+      toast(data !== "" ? data : "error occurred while logging in", {
+        type: "error",
+      });
     }
   };
 
@@ -41,9 +50,11 @@ const LoginView = () => {
       );
       setUser(data);
     } catch (e) {
-      const { data } = e.response;
+      const { data } = e.response ? e.response : { data: "" };
       setLoading(false);
-      toast(data ? data : "error occurred while logging in", { type: "error" });
+      toast(data !== "" ? data : "error occurred while logging in", {
+        type: "error",
+      });
     }
   };
 
@@ -61,11 +72,11 @@ const LoginView = () => {
         setLoading(false);
         setUser(data);
       } catch (e) {
-        const { data } = e.response;
-        toast(data ? data : "some error occurred while logging in", {
+        const { data } = e.response ? e.response : { data: "" };
+        setLoading(false);
+        toast(data !== "" ? data : "error occurred while logging in", {
           type: "error",
         });
-        setLoading(false);
       }
     } else {
       setLoading(false);
@@ -135,12 +146,12 @@ const LoginView = () => {
           </span>
           Create Account
         </button>
-        <div className="grid grid-cols-3 items-center">
-          <hr className="mx-2" />
-          <p className="text-sm text-gray-500 font-semibold">
+        <div className="grid grid-cols-4 sm:grid-cols-3 items-center">
+          <hr className="sm:mx-2 max-w-2" />
+          <p className="text-sm text-gray-500 font-semibold col-span-2 sm:col-span-1 mx-auto">
             Or continue with
           </p>
-          <hr className="mx-2" />
+          <hr className="sm:mx-2" />
         </div>
         <div className="grid grid-cols-2 gap-5 mt-5 mb-3">
           <GoogleLogin

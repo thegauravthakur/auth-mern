@@ -6,8 +6,8 @@ module.exports = async (user, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     secure: true,
-    sameSite: true,
     maxAge: 3600000,
+    sameSite:'none',
   });
   const rest = docToJsObject(user);
   res.send(rest);

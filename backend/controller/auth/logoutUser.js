@@ -1,4 +1,9 @@
 module.exports = (req, res) => {
-  res.clearCookie('token');
+  res.cookie("token", 'jasdkfl', {
+    httpOnly: true,
+    secure: true,
+    maxAge: 3600000,
+    sameSite:'none',
+  });
   res.send('user logged out');
 }

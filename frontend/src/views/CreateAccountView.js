@@ -19,7 +19,10 @@ const CreateAccountView = () => {
 
   const onSubmitHandler = async (data) => {
     const { name, email, password } = data;
-    const options = { headers: { "Content-Type": "application/json" } };
+    const options = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
     try {
       setLoading(true);
       const { data } = await axios.post(

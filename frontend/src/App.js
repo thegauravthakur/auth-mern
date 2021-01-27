@@ -6,7 +6,7 @@ import HomeView from "./views/HomeView";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { UserState } from "./recoil/atom";
-import CreateAccountView from './views/CreateAccountView';
+import CreateAccountView from "./views/CreateAccountView";
 
 function App() {
   const [user, setUser] = useRecoilState(UserState);
@@ -15,7 +15,12 @@ function App() {
     const getUser = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get("https://hidden-temple-89315.herokuapp.com/jwtToUser");
+        const {
+          data,
+        } = await axios.get(
+          "https://hidden-temple-89315.herokuapp.com/jwtToUser",
+          { withCredentials: true }
+        );
         setUser(data);
         setLoading(false);
       } catch (e) {
@@ -29,7 +34,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/login" component={LoginView} />
-      <Route exact path='/signup' component={CreateAccountView} />
+      <Route exact path="/signup" component={CreateAccountView} />
       <ProtectedRoute component={HomeView} />
     </Switch>
   );
