@@ -3,7 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { RiLoader2Line } from "react-icons/ri";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
 import { UserState } from "../recoil/atom";
@@ -144,7 +144,7 @@ const LoginView = () => {
               <RiLoader2Line className="h-5 w-5 animate-spin" />
             )}
           </span>
-          Create Account
+          Login
         </button>
         <div className="grid grid-cols-4 sm:grid-cols-3 items-center">
           <hr className="sm:mx-2 max-w-2" />
@@ -202,6 +202,7 @@ const LoginView = () => {
           {/*</button>*/}
         </div>
       </form>
+      <Link to={'/signup'} className='mt-2 text-sm font-semibold  text-gray-500 hover:text- text-gray-600'>Don't have an account ?</Link>
       <ToastContainer />
     </div>
   );

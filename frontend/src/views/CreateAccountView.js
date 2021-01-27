@@ -7,7 +7,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
 import { UserState } from "../recoil/atom";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from 'react-router-dom';
 import { RiLoader2Line } from "react-icons/ri";
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
@@ -242,6 +242,7 @@ const CreateAccountView = () => {
           />
         </div>
       </form>
+      <Link to={'/login'} className='mt-2 text-sm font-semibold  text-gray-500 hover:text- text-gray-600'>Already have an account ?</Link>
       <ToastContainer />
     </div>
   );
