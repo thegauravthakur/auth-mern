@@ -9,6 +9,8 @@ import { useRecoilState } from "recoil";
 import { UserState } from "../recoil/atom";
 import { Redirect } from "react-router-dom";
 import { RiLoader2Line } from "react-icons/ri";
+import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 const CreateAccountView = () => {
   const { register, handleSubmit, errors, watch } = useForm();
@@ -16,7 +18,10 @@ const CreateAccountView = () => {
   const [loading, setLoading] = useState(false);
   const password = useRef({});
   password.current = watch("password");
-
+  const options = {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  };
   const onSubmitHandler = async (data) => {
     const { name, email, password } = data;
     const options = {
@@ -26,7 +31,7 @@ const CreateAccountView = () => {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        "https://hidden-temple-89315.herokuapp.com/createUser",
+        "https://hidden-temple-89315.herokuapp.com/createUser/email-password",
         { name, email, password },
         options
       );
@@ -38,6 +43,43 @@ const CreateAccountView = () => {
         type: "error",
       });
       setLoading(false);
+    }
+  };
+
+  const googleLoginResponseHandler = async (response) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        "https://hidden-temple-89315.herokuapp.com/createUser/google",
+        response,
+        options
+      );
+      setUser(data);
+      setLoading(false);
+    } catch (e) {
+      console.log({e})
+      const { data } = e.response ? e.response : { data: "" };
+      setLoading(false);
+      toast(data !== "" ? data : "error occurred while creating account", {
+        type: "error",
+      });
+    }
+  };
+  const facebookLoginHandler = async (response) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        "https://hidden-temple-89315.herokuapp.com/createUser/facebook",
+        response,
+        options
+      );
+      setUser(data);
+    } catch (e) {
+      const { data } = e.response ? e.response : { data: "" };
+      setLoading(false);
+      toast(data !== "" ? data : "error occurred while creating account", {
+        type: "error",
+      });
     }
   };
 
@@ -164,16 +206,40 @@ const CreateAccountView = () => {
           </p>
           <hr className="mx-2" />
         </div>
-        <div className="grid grid-cols-3 gap-5 mt-5 mb-3">
-          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
-            <AiFillGoogleCircle size={20} className="mx-auto text-gray-600" />
-          </button>
-          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
-            <FaFacebook size={18} className="mx-auto text-gray-600" />
-          </button>
-          <button className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100">
-            <AiOutlineTwitter size={20} className="mx-auto text-gray-600" />
-          </button>
+        <div className="grid grid-cols-2 gap-5 mt-5 mb-3">
+          <GoogleLogin
+            clientId="206612287240-pdsfsm9qb0u6kgfgpsb86ejg220t74v0.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <button
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                type="button"
+                className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"
+              >
+                <AiFillGoogleCircle
+                  size={20}
+                  className="mx-auto text-gray-600"
+                />
+              </button>
+            )}
+            buttonText="Login"
+            onSuccess={googleLoginResponseHandler}
+            onFailure={(e) => console.log(e)}
+            cookiePolicy={"single_host_origin"}
+          />
+          <FacebookLogin
+            appId="428705644999130"
+            callback={facebookLoginHandler}
+            render={(renderProps) => (
+              <button
+                type="button"
+                onClick={renderProps.onClick}
+                className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"
+              >
+                <FaFacebook size={18} className="mx-auto text-gray-600" />
+              </button>
+            )}
+          />
         </div>
       </form>
       <ToastContainer />
