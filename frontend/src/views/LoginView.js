@@ -187,19 +187,6 @@ const LoginView = () => {
               </button>
             )}
           />
-          {/*<button*/}
-          {/*  type="button"*/}
-          {/*  className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"*/}
-          {/*  onClick={async () => {*/}
-          {/*    const myWindow = window.open(*/}
-          {/*      "https://github.com/login/oauth/authorize?client_id=036a1804f3cb8a9bd704",*/}
-          {/*      "myWindow",*/}
-          {/*      "width=200, height=100"*/}
-          {/*    );*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  <AiOutlineTwitter size={20} className="mx-auto text-gray-600" />*/}
-          {/*</button>*/}
         </div>
       </form>
       <Link to={'/signup'} className='mt-2 text-sm font-semibold  text-gray-500 hover:text- text-gray-600'>Don't have an account ?</Link>

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
-import { AiFillGoogleCircle, AiOutlineTwitter } from "react-icons/ai";
+import { AiFillGoogleCircle} from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
@@ -234,7 +234,7 @@ const CreateAccountView = () => {
               <button
                 type="button"
                 onClick={renderProps.onClick}
-                className="w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none"
+                className={`w-full py-1 border-2 rounded-md transition duration-500 ease-in-out hover:bg-gray-100 focus:outline-none `}
               >
                 <FaFacebook size={18} className="mx-auto text-gray-600" />
               </button>

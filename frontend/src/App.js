@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import LoginView from "./views/LoginView";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { UserState } from "./recoil/atom";
 import CreateAccountView from "./views/CreateAccountView";
+import { RiLoader2Line } from "react-icons/ri";
 
 function App() {
   const [user, setUser] = useRecoilState(UserState);
@@ -30,7 +31,12 @@ function App() {
     };
     getUser().then();
   }, []);
-  if (loading) return <p>loading</p>;
+  if (loading)
+    return (
+      <div className='min-h-screen flex justify-center items-center bg-blue-50'>
+        <RiLoader2Line className="h-5 w-5 animate-spin" />
+      </div>
+    );
   return (
     <Switch>
       <Route exact path="/login" component={LoginView} />
