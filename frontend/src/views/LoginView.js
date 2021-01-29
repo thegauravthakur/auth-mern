@@ -34,7 +34,7 @@ const LoginView = () => {
     } catch (e) {
       const { data } = e.response ? e.response : { data: "" };
       setLoading(false);
-      toast(data !== "" ? data : "error occurred while logging in", {
+      toast(data !== "" && e.response.status !== 404 ? data : "error occurred while logging in", {
         type: "error",
       });
     }
@@ -52,7 +52,7 @@ const LoginView = () => {
     } catch (e) {
       const { data } = e.response ? e.response : { data: "" };
       setLoading(false);
-      toast(data !== "" ? data : "error occurred while logging in", {
+      toast(data !== "" && e.response.status !== 404 ? data : "error occurred while logging in", {
         type: "error",
       });
     }
@@ -74,7 +74,7 @@ const LoginView = () => {
       } catch (e) {
         const { data } = e.response ? e.response : { data: "" };
         setLoading(false);
-        toast(data !== "" ? data : "error occurred while logging in", {
+        toast(data !== "" && e.response.status !== 404 ? data : "error occurred while logging in", {
           type: "error",
         });
       }

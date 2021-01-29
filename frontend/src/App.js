@@ -14,7 +14,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getUser = async () => {
-      setLoading(true);
       try {
         const {
           data,

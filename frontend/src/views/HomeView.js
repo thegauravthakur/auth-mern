@@ -1,13 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, useHistory } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { UserState } from "../recoil/atom";
-import { RiLoader2Line } from 'react-icons/ri';
+import { RiLoader2Line } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
 
 const HomeView = () => {
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [user, setUser] = useRecoilState(UserState);
+  const options = {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  };
+
+  const onDeleteUserHandler = async () => {
+    try {
+      setDeleteLoading(true);
+      await axios.post(
+        "https://hidden-temple-89315.herokuapp.com/deleteAccount",
+        { id: user.id },
+        options
+      );
+      setDeleteLoading(false);
+      setUser(null);
+    } catch (e) {
+      setDeleteLoading(false);
+      const { data } = e.response ? e.response : { data: "" };
+      setLoading(false);
+      toast(
+        data !== "" && e.response.status !== 404
+          ? data
+          : "error occurred while deleting user account",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
   const onClickHandler = async () => {
     try {
       setLoading(true);
@@ -42,32 +74,51 @@ const HomeView = () => {
           <p className="font-semibold text-gray-700">Email</p>
           <p className="text-gray-700">{user.email}</p>
         </div>
+        <div className="flex justify-between">
+          <p className="font-semibold text-gray-700">Unique ID</p>
+          <p className="text-gray-700">{user.id}</p>
+        </div>
       </div>
+
       <button
         onClick={onClickHandler}
-        className="relative text-sm font-semibold w-full max-w-md mt-3 py-2 mb-5 bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-white transition duration-500 ease-in-out"
+        className="relative text-sm font-semibold w-full max-w-md mt-3 py-2 mb-5 bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none text-white transition duration-500 ease-in-out block mx-auto"
       >
-          <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-            {!loading ? (
-              <svg
-                className="h-5 w-5 text-gray-200 group-hover:text-indigo-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            ) : (
-              <RiLoader2Line className="h-5 w-5 animate-spin" />
-            )}
-          </span>
+        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+          {!loading ? (
+            <svg
+              className="h-5 w-5 text-gray-200 group-hover:text-indigo-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            <RiLoader2Line className="h-5 w-5 animate-spin" />
+          )}
+        </span>
         Logout
       </button>
+      <button
+        onClick={onDeleteUserHandler}
+        className="relative text-sm font-semibold w-full max-w-md py-2 mb-5 bg-red-500 rounded-md hover:bg-red-600 focus:outline-none text-white transition duration-500 ease-in-out"
+      >
+        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+          {!deleteLoading ? (
+            <MdDelete className="h-5 w-5 text-gray-200" />
+          ) : (
+            <RiLoader2Line className="h-5 w-5 animate-spin" />
+          )}
+        </span>
+        Delete Account
+      </button>
+      <ToastContainer />
     </div>
   );
 };
