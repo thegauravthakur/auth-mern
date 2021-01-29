@@ -14,13 +14,13 @@ module.exports = async (req, res) => {
     if (user && user.password)
       return res.status(409).send("Account with same email already exists!");
     else if (user && !user.password) {
-      const updatedUser = await UserModel.findOneAndUpdate(
+     await UserModel.findOneAndUpdate(
         { email: req.body.email },
         { $set: { password: textToHash(req.body.password) } },
-        { lean: true }
+        { lean: true, new: true }
       );
-      console.log({updatedUser})
-      await signTokenAndSendCookie(updatedUser, res, true);
+      const user = await UserModel.findOne({email:req.body.email}).exec();
+      await signTokenAndSendCookie(user, res);
     } else {
       const newUser = new UserModel({
         ...req.body,
